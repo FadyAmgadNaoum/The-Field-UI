@@ -1,0 +1,1003 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter+Tight:wght@400;500;600;700&family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { margin: 0; }
+  a { color: inherit; text-decoration: none; }
+  a:hover { color: var(--terra); }
+  input, button, select, textarea { font: inherit; color: inherit; }
+  .fld {
+    --bg: #001C14; --surface: #04241B; --raise: #0A3327; --line: #15473A;
+    --ink: #F1F6EF; --muted: #8FA79C; --terra: #D3FE01; --ok: #328C72;
+    --lime: #D3FE01; --green: #328C72; --slate: #4C6B90; --coal: #111111;
+    --r: 16px; --r-sm: 11px;
+    --wash: radial-gradient(120% 90% at 12% 0%, rgba(50,140,114,.30) 0%, rgba(50,140,114,0) 58%), radial-gradient(90% 80% at 100% 100%, rgba(76,107,144,.26) 0%, rgba(76,107,144,0) 62%);
+    --panel: linear-gradient(160deg, rgba(255,255,255,.05) 0%, rgba(255,255,255,0) 55%);
+    --cta: linear-gradient(135deg, #E4FF4A 0%, #D3FE01 46%, #B4DC00 100%);
+    --shadow: 0 24px 60px -28px rgba(0,0,0,.55);
+    --fd: 'Inter Tight', 'Helvetica Neue', sans-serif;
+    --fl: 'Bebas Neue', 'Inter Tight', sans-serif;
+    --fb: 'Inter Tight', 'Helvetica Neue', sans-serif;
+  }
+  .fld[data-theme="light"] {
+    --bg: #EAF1EC; --surface: #FFFFFF; --raise: #FFFFFF; --line: #CBDCD1;
+    --ink: #111111; --muted: #4C6B90; --terra: #1F6B55; --ok: #328C72;
+    --wash: radial-gradient(90% 70% at 8% 0%, rgba(50,140,114,.22) 0%, rgba(50,140,114,0) 60%), radial-gradient(70% 60% at 96% 8%, rgba(211,254,1,.30) 0%, rgba(211,254,1,0) 64%), radial-gradient(80% 70% at 100% 100%, rgba(76,107,144,.20) 0%, rgba(76,107,144,0) 64%);
+    --panel: linear-gradient(160deg, rgba(255,255,255,.85) 0%, rgba(234,241,236,.35) 55%, rgba(211,254,1,.10) 100%);
+    --shadow: 0 22px 50px -28px rgba(17,17,17,.25);
+  }
+  .fld[dir="rtl"] { --fd: 'Tajawal', sans-serif; --fl: 'Tajawal', sans-serif; --fb: 'Tajawal', sans-serif; }
+  .fld[dir="rtl"] h1, .fld[dir="rtl"] h2, .fld[dir="rtl"] h3, .fld[dir="rtl"] [data-wordmark] { font-weight: 800 !important; letter-spacing: 0 !important; }
+  .fld h1, .fld h2, .fld h3 { font-family: var(--fd); font-weight: 700 !important; text-transform: none !important; letter-spacing: -0.025em !important; }
+  .fld [data-wordmark], .fld [data-label] { font-family: var(--fl); }
+  .fld [data-wordmark] { font-weight: 400 !important; letter-spacing: .12em !important; }
+  .fld [data-btn], .fld [data-btn-sm], .fld [data-navlink] { text-transform: none !important; }
+  .fld [data-step] { font-family: var(--fl); font-size: 15px; color: var(--terra); }
+
+
+  @keyframes fldPreLight { 0% { transform: translate3d(-3%,-2%,0) scale(1.05); opacity: .75; } 50% { transform: translate3d(4%,3%,0) scale(1.16); opacity: 1; } 100% { transform: translate3d(-3%,-2%,0) scale(1.05); opacity: .75; } }
+  @keyframes fldPreLight2 { 0% { transform: translate3d(3%,2%,0) scale(1.14); opacity: 1; } 50% { transform: translate3d(-4%,-3%,0) scale(1.02); opacity: .7; } 100% { transform: translate3d(3%,2%,0) scale(1.14); opacity: 1; } }
+  .fld [data-prelight="a"] { animation: fldPreLight 11s ease-in-out infinite; }
+  .fld [data-prelight="b"] { animation: fldPreLight2 14s ease-in-out infinite; }
+  @keyframes fldPre { to { opacity: 0; visibility: hidden; } }
+  @keyframes fldBar { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+  @keyframes fldSceneA { 0%, 26% { opacity: 1; } 36%, 92% { opacity: 0; } 100% { opacity: 1; } }
+  @keyframes fldSceneB { 0%, 26% { opacity: 0; } 36%, 59% { opacity: 1; } 69%, 100% { opacity: 0; } }
+  @keyframes fldSceneC { 0%, 59% { opacity: 0; } 69%, 92% { opacity: 1; } 100%, 100% { opacity: 0; } }
+  @keyframes fldCapA { 0%, 26% { opacity: 1; } 36%, 92% { opacity: .25; } 100% { opacity: 1; } }
+  @keyframes fldCapB { 0%, 26% { opacity: .25; } 36%, 59% { opacity: 1; } 69%, 100% { opacity: .25; } }
+  @keyframes fldCapC { 0%, 59% { opacity: .25; } 69%, 92% { opacity: 1; } 100% { opacity: .25; } }
+  @keyframes fldTick { 0%, 20% { background: #D3FE01; } 34%, 100% { background: rgba(241,246,239,.28); } }
+  .fld [data-scene], .fld [data-cap] { animation-duration: 27s; animation-iteration-count: infinite; animation-timing-function: cubic-bezier(.45,0,.55,1); animation-fill-mode: both; }
+  .fld [data-scene="a"] { animation-name: fldSceneA; }
+  .fld [data-scene="b"] { animation-name: fldSceneB; }
+  .fld [data-scene="c"] { animation-name: fldSceneC; }
+  .fld [data-cap="a"] { animation-name: fldCapA; }
+  .fld [data-cap="b"] { animation-name: fldCapB; }
+  .fld [data-cap="c"] { animation-name: fldCapC; }
+  @keyframes fldRise { from { opacity: 0; transform: translateY(16px) scale(.99); filter: blur(7px); } to { opacity: 1; transform: none; filter: blur(0); } }
+  @keyframes fldZoomIn { from { transform: scale(1.02); } to { transform: scale(1.22); } }
+  @keyframes fldZoomOut { from { transform: scale(1.22); } to { transform: scale(1.02); } }
+  @keyframes fldInRight { from { opacity: 0; transform: translateX(14%) scale(1.03); filter: blur(9px); } to { opacity: 1; transform: none; filter: blur(0); } }
+  @keyframes fldInLeft { from { opacity: 0; transform: translateX(-14%) scale(1.03); filter: blur(9px); } to { opacity: 1; transform: none; filter: blur(0); } }
+  @keyframes fldDrift { from { transform: translateX(0) scale(1.14); } to { transform: translateX(-4%) scale(1.02); } }
+  @keyframes fldDriftRev { from { transform: translateX(0) scale(1.14); } to { transform: translateX(4%) scale(1.02); } }
+  @keyframes fldTextIn { from { opacity: 0; transform: translateY(22px); } to { opacity: 1; transform: none; } }
+  .fld [data-in] { animation: linear both; animation-timeline: view(); animation-range: entry 10% cover 42%; }
+  .fld [data-in="right"] { animation-name: fldInRight; }
+  .fld [data-in="left"] { animation-name: fldInLeft; }
+  @keyframes fldKen { 0% { transform: scale(1.16) translate(0,0); } 50% { transform: scale(1.04) translate(-2.5%,1.5%); } 100% { transform: scale(1.16) translate(0,0); } }
+  @keyframes fldKenRev { 0% { transform: scale(1.04) translate(2.5%,-1%); } 50% { transform: scale(1.18) translate(0,1.5%); } 100% { transform: scale(1.04) translate(2.5%,-1%); } }
+  .fld [data-drift="a"] { animation: fldKen 22s ease-in-out infinite both; }
+  .fld [data-drift="b"] { animation: fldKenRev 26s ease-in-out infinite both; }
+  .fld [data-band-row] { opacity: 0; transition: opacity 1s cubic-bezier(.2,.7,.2,1), transform 1.1s cubic-bezier(.2,.7,.2,1), filter 1s ease; filter: blur(10px); }
+  .fld [data-band-row="right"] { transform: translateX(15%) scale(1.03); }
+  .fld [data-band-row="left"] { transform: translateX(-15%) scale(1.03); }
+  .fld [data-band-row].is-in { opacity: 1; transform: none; filter: blur(0); }
+  .fld [data-textin] { opacity: 0; transform: translateY(26px); transition: opacity .9s ease .18s, transform 1s cubic-bezier(.2,.7,.2,1) .18s; }
+  .fld [data-band-row].is-in [data-textin] { opacity: 1; transform: none; }
+  .fld [data-band] { transition: transform .7s cubic-bezier(.2,.7,.2,1), box-shadow .7s ease; }
+  .fld [data-band]:hover { transform: scale(1.015); box-shadow: var(--shadow); }
+  @keyframes fldGlow { 0%, 100% { opacity: .55; } 50% { opacity: .9; } }
+  @keyframes fldSettle { from { transform: scale(1.07); } to { transform: scale(1); } }
+  @keyframes fldWipe { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+  .fld { transition: background-color .45s ease, color .45s ease; }
+  .fld button, .fld a { transition: background-color .25s ease, color .25s ease, border-color .25s ease, opacity .25s ease, transform .2s ease; }
+  .fld button:active { transform: translateY(1px); }
+  .fld article { transition: transform .55s cubic-bezier(.2,.7,.2,1), box-shadow .55s ease, border-color .45s ease; }
+  .fld article:hover { transform: translateY(-6px) scale(1.012); box-shadow: var(--shadow); border-color: transparent; }
+  .fld article [role="img"] { transition: transform 1.1s cubic-bezier(.2,.7,.2,1), filter .8s ease; }
+  .fld article:hover [role="img"] { transform: scale(1.09); filter: saturate(1.08); }
+  .fld [data-zoom="in"] { animation: fldZoomIn 30s ease-in-out infinite alternate both; }
+  .fld [data-zoom="out"] { animation: fldZoomOut 30s ease-in-out infinite alternate both; }
+  .fld [data-header] { background: rgba(0,20,14,.28); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); }
+  .fld[data-theme="light"] [data-header] { background: rgba(255,255,255,.72); color: #111111 !important; }
+  .fld[data-theme="light"] [data-header] button { border-color: rgba(17,17,17,.22) !important; }
+  .fld [data-navlink] { color: inherit !important; transition: color .3s ease, opacity .3s ease; }
+  .fld [data-navlink]:hover { color: var(--terra) !important; }
+  .fld[data-theme="light"] [data-navlink]:hover { color: #0F5132 !important; }
+  .fld[data-theme="light"] a:hover { color: #0F5132; }
+  .fld[data-theme="light"] [data-pill] { color: #111111 !important; }
+  .fld [data-glow] { position: fixed; top: 0; inset-inline-start: 0; width: 520px; height: 520px; margin: -260px 0 0 -260px; border-radius: 50%; pointer-events: none; z-index: 90; opacity: 0; transition: opacity .5s ease; mix-blend-mode: screen; background: radial-gradient(circle, rgba(211,254,1,.30) 0%, rgba(0,141,90,.20) 38%, rgba(211,254,1,0) 70%); filter: blur(28px); }
+  .fld[data-theme="light"] [data-glow] { mix-blend-mode: multiply; background: radial-gradient(circle, rgba(0,141,90,.22) 0%, rgba(15,81,50,.14) 40%, rgba(0,141,90,0) 72%); }
+  .fld [data-glow].is-on { opacity: 1; }
+  .fld [data-pill]:hover { filter: brightness(1.06); transform: translateY(-1px); }
+  .fld [data-mark] { transition: transform .45s cubic-bezier(.2,.7,.2,1), box-shadow .45s ease, filter .45s ease; }
+  .fld a:hover [data-mark] { transform: translateY(-3px) scale(1.06); filter: saturate(1.15); }
+  .fld a:hover [data-wordmark] { letter-spacing: .3em; }
+  .fld [data-wordmark] { transition: letter-spacing .5s cubic-bezier(.2,.7,.2,1); }
+  .fld [data-rise] { animation: fldRise .7s cubic-bezier(.2,.7,.2,1) both; }
+  .fld [data-reveal] { animation: fldRise linear both; animation-timeline: view(); animation-range: entry 2% cover 26%; }
+  .fld [data-rule] { animation: fldWipe .9s cubic-bezier(.2,.7,.2,1) both; transform-origin: left center; }
+  .fld[dir="rtl"] [data-rule] { transform-origin: right center; }
+  @media (prefers-reduced-motion: reduce) {
+    .fld *, .fld *::before, .fld *::after { animation: none !important; transition: none !important; }
+    .fld [data-scene="b"], .fld [data-scene="c"], .fld [data-cap="b"], .fld [data-cap="c"] { opacity: 0 !important; }
+    .fld article:hover { transform: none; }
+  }
+  .fld button, .fld [data-btn] { font-family: var(--fb); letter-spacing: .02em; position: relative; background-size: 180% 180%; background-position: 0% 50%; transition: transform .3s cubic-bezier(.2,.7,.2,1), box-shadow .35s ease, background-position .5s ease, background-color .3s ease, border-color .3s ease, color .3s ease; }
+  .fld button:hover:not([data-status="booked"]):not([data-status="held"]), .fld [data-btn]:hover { transform: translateY(-3px); background-position: 100% 50%; box-shadow: 0 16px 34px -16px rgba(0,141,90,.55); }
+  .fld[data-theme="light"] button:hover:not([data-status="booked"]):not([data-status="held"]), .fld[data-theme="light"] [data-btn]:hover { box-shadow: 0 16px 34px -18px rgba(31,107,85,.45); }
+  .fld button:not([data-sel="1"]):not([data-pill]):not([data-status="booked"]):not([data-status="held"]):hover { background-image: linear-gradient(120deg, rgba(0,141,90,.30) 0%, rgba(211,254,1,.22) 100%) !important; border-color: var(--terra) !important; }
+  .fld[dir="rtl"] button, .fld[dir="rtl"] [data-btn] { letter-spacing: 0; }
+  .fld [data-btn] { font-size: 14px !important; font-weight: 600; letter-spacing: .05em !important; }
+  .fld [data-btn-sm] { font-size: 12.5px !important; letter-spacing: .05em !important; text-transform: none !important; }
+  .fld[data-theme="light"] [data-hero-cta2] { border-color: rgba(17,17,17,.3) !important; background: rgba(255,255,255,.55) !important; color: #111111 !important; }
+  @keyframes fldAurora { 0% { transform: translate3d(-4%, -2%, 0) scale(1.05); } 33% { transform: translate3d(3%, 3%, 0) scale(1.14); } 66% { transform: translate3d(2%, -4%, 0) scale(1.08); } 100% { transform: translate3d(-4%, -2%, 0) scale(1.05); } }
+  @keyframes fldAurora2 { 0% { transform: translate3d(3%, 2%, 0) scale(1.12); } 50% { transform: translate3d(-3%, -3%, 0) scale(1.02); } 100% { transform: translate3d(3%, 2%, 0) scale(1.12); } }
+  .fld [data-aurora] { position: fixed; inset: 0; pointer-events: none; z-index: 0; overflow: hidden; }
+  .fld [data-aurora] > span { position: absolute; inset: -25%; display: block; will-change: transform; }
+  .fld [data-aurora] > span:nth-child(1) { background: radial-gradient(38% 42% at 22% 26%, rgba(0,141,90,.34) 0%, rgba(0,141,90,0) 68%), radial-gradient(34% 38% at 80% 18%, rgba(211,254,1,.16) 0%, rgba(211,254,1,0) 70%); animation: fldAurora 34s ease-in-out infinite; }
+  .fld [data-aurora] > span:nth-child(2) { background: radial-gradient(40% 44% at 74% 78%, rgba(15,81,50,.4) 0%, rgba(15,81,50,0) 70%), radial-gradient(30% 34% at 14% 84%, rgba(211,254,1,.12) 0%, rgba(211,254,1,0) 72%); animation: fldAurora2 42s ease-in-out infinite; }
+  .fld[data-theme="light"] [data-aurora] > span:nth-child(1) { background: radial-gradient(40% 44% at 20% 24%, rgba(0,141,90,.20) 0%, rgba(0,141,90,0) 70%), radial-gradient(36% 40% at 82% 16%, rgba(211,254,1,.30) 0%, rgba(211,254,1,0) 70%); }
+  .fld[data-theme="light"] [data-aurora] > span:nth-child(2) { background: radial-gradient(42% 46% at 76% 80%, rgba(15,81,50,.16) 0%, rgba(15,81,50,0) 72%), radial-gradient(34% 38% at 10% 86%, rgba(0,141,90,.16) 0%, rgba(0,141,90,0) 74%); }
+  .fld > * { position: relative; z-index: 1; }
+  @keyframes fldAuroraNone { from { opacity: 1; } to { opacity: 1; } }
+  .fld ::selection { background: var(--terra); color: #fff; }
+  .fld [data-sel="1"] { border-color: var(--lime, #D3FE01) !important; background-image: var(--cta) !important; color: #111111 !important; }
+  .fld [data-status="booked"], .fld [data-status="held"] { color: var(--muted) !important; text-decoration: line-through; cursor: not-allowed !important; background: transparent !important; opacity: .55; }
+  .fld [data-status="selected"] { border-color: var(--lime, #D3FE01) !important; background-image: var(--cta) !important; color: #111111 !important; }
+  .fld [data-dim="1"] { opacity: .38; pointer-events: none; }
+</style>
+</helmet>
+<div class="fld" dir="{{ dir }}" data-theme="{{ theme }}" style="background:var(--bg);color:var(--ink);min-height:100vh;font-family:var(--fb);font-size:16px;line-height:1.55;-webkit-font-smoothing:antialiased">
+
+
+  <sc-if value="{{ loading }}" hint-placeholder-val="{{ true }}">
+    <div data-pre style="position:fixed;inset:0;z-index:200;overflow:hidden;background:#001C14;color:#F1F6EF;display:grid;place-items:center;padding:clamp(22px,4vw,44px);font-family:var(--fb)">
+      <div aria-hidden="true" style="position:absolute;inset:-6%;background-image:url(images/padel-close.png);background-size:cover;background-position:center 45%;filter:blur(26px) saturate(1.1);opacity:.5"></div>
+      <div aria-hidden="true" style="position:absolute;inset:0;background:radial-gradient(70% 60% at 50% 42%, rgba(0,28,20,.5) 0%, rgba(0,28,20,.92) 68%, #001C14 100%)"></div>
+      <div data-prelight="a" aria-hidden="true" style="position:absolute;inset:-20%;background:radial-gradient(30% 34% at 24% 30%, rgba(211,254,1,.28) 0%, rgba(211,254,1,0) 70%), radial-gradient(26% 30% at 78% 22%, rgba(50,140,114,.34) 0%, rgba(50,140,114,0) 72%)"></div>
+      <div data-prelight="b" aria-hidden="true" style="position:absolute;inset:-20%;background:radial-gradient(32% 36% at 72% 76%, rgba(0,141,90,.36) 0%, rgba(0,141,90,0) 72%), radial-gradient(24% 28% at 18% 84%, rgba(211,254,1,.18) 0%, rgba(211,254,1,0) 74%)"></div>
+      <div style="position:relative;display:flex;flex-direction:column;align-items:center;text-align:center;gap:22px;max-width:720px">
+        <div data-rise style="display:flex;align-items:center;gap:12px">
+          <span style="position:relative;display:block;width:34px;height:34px;flex:0 0 auto">
+            <span style="position:absolute;inset-inline-start:0;top:0;width:10px;height:34px;border-radius:5px;background:#D3FE01"></span>
+            <span style="position:absolute;inset-inline-start:13px;top:0;width:21px;height:10px;border-radius:5px;background:#D3FE01"></span>
+            <span style="position:absolute;inset-inline-start:13px;top:13px;width:15px;height:9px;border-radius:5px;background:#D3FE01"></span>
+          </span>
+          <span style="display:flex;flex-direction:column;line-height:1;text-align:start">
+            <span style="font-family:var(--fd);font-weight:700;font-size:15px;letter-spacing:0.22em;text-transform:uppercase">{{ t.brand }}</span>
+            <span style="font-size:9px;letter-spacing:0.3em;text-transform:uppercase;color:#8FA79C;margin-top:5px;white-space:nowrap">{{ t.brandTag }}</span>
+          </span>
+        </div>
+        <div style="font-size:11px;letter-spacing:0.24em;text-transform:uppercase;color:#D3FE01">{{ t.pre.eyebrow }}</div>
+        <div style="font-family:var(--fd);font-weight:700;font-size:clamp(30px,5.4vw,68px);line-height:0.96;letter-spacing:-0.02em;text-transform:uppercase;white-space:pre-line">{{ t.pre.line }}</div>
+        <div style="width:min(100%,360px);display:flex;flex-direction:column;gap:12px;margin-top:6px">
+          <div style="height:3px;border-radius:999px;background:rgba(241,246,239,.14);overflow:hidden">
+            <div style="height:100%;width:{{ progressPct }};border-radius:999px;background-image:linear-gradient(90deg,#328C72,#D3FE01);transition:width .6s cubic-bezier(.2,.7,.2,1)"></div>
+          </div>
+          <div style="display:flex;align-items:center;justify-content:space-between;font-size:11px;letter-spacing:0.16em;text-transform:uppercase;color:#8FA79C">
+            <span>{{ t.pre.loading }}</span><span style="font-variant-numeric:tabular-nums">{{ progressLabel }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+
+  <div data-aurora aria-hidden="true"><span></span><span></span></div>
+  <div data-glow aria-hidden="true"></div>
+  <header data-header style="position:sticky;top:0;z-index:60;display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:20px;padding:16px clamp(16px,3vw,34px);color:#F1F6EF">
+    <a href="#top" onClick="{{ goHome }}" style="display:flex;align-items:center;gap:13px;flex:0 0 auto;color:inherit">
+      <span data-mark style="position:relative;display:block;width:32px;height:32px;flex:0 0 auto">
+        <span style="position:absolute;inset-inline-start:0;top:0;width:10px;height:32px;border-radius:5px;background:var(--terra)"></span>
+        <span style="position:absolute;inset-inline-start:12px;top:0;width:20px;height:10px;border-radius:5px;background:var(--terra)"></span>
+        <span style="position:absolute;inset-inline-start:12px;top:12px;width:14px;height:9px;border-radius:5px;background:var(--terra)"></span>
+      </span>
+      <span data-wordmark style="font-family:var(--fd);font-weight:700;font-size:15px;letter-spacing:0.2em;text-transform:uppercase;white-space:nowrap">{{ t.brand }}</span>
+    </a>
+    <nav style="display:flex;align-items:center;justify-content:center;gap:clamp(16px,2.6vw,36px);font-family:var(--fb);font-size:14px;font-weight:500;letter-spacing:0.01em;text-transform:uppercase;white-space:nowrap;min-width:0;overflow:hidden">
+      <a data-navlink href="#top" onClick="{{ goHome }}" style="color:inherit">{{ t.nav.home }}</a>
+      <a data-navlink href="#courts" style="color:inherit">{{ t.nav.courts }}</a>
+      <a data-navlink href="#locations" style="color:inherit">{{ t.nav.locations }}</a>
+      <a data-navlink href="#booking" style="color:inherit">{{ t.nav.booking }}</a>
+    </nav>
+    <div style="display:flex;align-items:center;gap:8px;white-space:nowrap;flex:0 0 auto">
+      <button onClick="{{ toggleLang }}" data-btn-sm style="background:none;border:1px solid rgba(241,246,239,.28);border-radius:999px;padding:9px 14px;font-size:11px;letter-spacing:0.12em;cursor:pointer;color:inherit">{{ t.langSwitch }}</button>
+      <button onClick="{{ toggleTheme }}" data-btn-sm style="background:none;border:1px solid rgba(241,246,239,.28);border-radius:999px;padding:9px 14px;font-size:11px;letter-spacing:0.12em;cursor:pointer;color:inherit">{{ themeSwitch }}</button>
+      <sc-if value="{{ signedIn }}" hint-placeholder-val="{{ false }}">
+        <button onClick="{{ signOut }}" data-btn-sm data-pill style="background-image:var(--cta);color:#111111;border:none;border-radius:999px;padding:11px 20px;font-weight:600;cursor:pointer;white-space:nowrap">{{ t.signOut }}</button>
+      </sc-if>
+      <sc-if value="{{ signedOut }}" hint-placeholder-val="{{ true }}">
+        <button onClick="{{ goAuth }}" data-btn-sm data-pill style="background-image:var(--cta);color:#111111;border:none;border-radius:999px;padding:11px 20px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:9px;white-space:nowrap">{{ t.joinNow }}<span style="font-size:14px;line-height:1">→</span></button>
+      </sc-if>
+    </div>
+  </header>
+
+  <!-- ===================== LANDING ===================== -->
+  <sc-if value="{{ isLanding }}" hint-placeholder-val="{{ true }}">
+  <main id="top">
+
+    <!-- HERO -->
+    <section style="position:relative;height:auto;min-height:100svh;margin-top:calc(-1 * var(--hdr, 74px));overflow:hidden;display:grid;background:#0b1c2a">
+      <div data-hero-frame style="position:absolute;inset:0;overflow:hidden">
+        <div data-zoom="in" role="img" aria-label="THE FIELD — padel player striking a forehand" style="position:absolute;inset:-3%;background-image:url(images/padel-close.png);background-repeat:no-repeat;background-size:cover;background-position:center 42%"></div>
+      </div>
+      <div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,20,14,0) 0%,rgba(0,20,14,0) 55%,rgba(0,20,14,.55) 82%,var(--bg) 100%)"></div>
+      <h1 style="position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);margin:0">{{ t.brand }} — {{ t.hero.tag }}</h1>
+      <div style="position:relative;align-self:end;display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:14px;padding:clamp(120px,28svh,300px) clamp(20px,5vw,64px) clamp(30px,6svh,72px)">
+        <a href="#booking" data-btn data-rise style="animation-delay:.5s;background-image:var(--cta);color:#111111;border-radius:999px;padding:18px 38px;font-weight:600;text-transform:uppercase;white-space:nowrap;box-shadow:0 20px 46px -18px rgba(211,254,1,.6)">{{ t.hero.cta1 }}</a>
+        <a href="#courts" data-btn data-hero-cta2 data-rise style="animation-delay:.62s;border:1px solid rgba(241,246,239,.4);background:rgba(11,28,42,.42);color:#F1F6EF;border-radius:999px;padding:18px 38px;font-weight:600;text-transform:uppercase;white-space:nowrap;backdrop-filter:blur(8px)">{{ t.hero.cta2 }}</a>
+      </div>
+    </section>
+
+    <!-- COURTS -->
+    <section id="courts" style="padding:clamp(44px,5.5vw,88px) clamp(18px,4vw,56px);background-image:var(--wash);scroll-margin-top:64px">
+      <div data-reveal style="display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:20px;margin-bottom:34px">
+        <div>
+          <div style="font-size:11px;letter-spacing:0.22em;text-transform:uppercase;color:var(--terra);margin-bottom:12px">{{ t.courts.eyebrow }}</div>
+          <h2 style="margin:0;font-family:var(--fd);font-weight:600;font-size:clamp(28px,3.6vw,44px);line-height:1.03;letter-spacing:-0.015em;text-transform:uppercase">{{ t.courts.title }}</h2>
+        </div>
+        <p style="margin:0;max-width:38ch;font-size:15px;color:var(--muted);text-wrap:pretty">{{ t.courts.note }}</p>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:clamp(14px,2vw,24px)">
+        <sc-for list="{{ courts }}" as="court" hint-placeholder-count="3">
+          <article data-reveal style="background:var(--bg);border:1px solid var(--line);border-radius:var(--r);overflow:hidden;background-image:var(--panel);display:flex;flex-direction:column">
+            <div style="position:relative;aspect-ratio:4/3;overflow:hidden;border-radius:var(--r) var(--r) 0 0">
+              <div role="img" aria-label="{{ court.name }}" style="width:100%;height:100%;background-color:var(--raise);background-repeat:no-repeat;background-image:{{ court.coverCss }};background-size:{{ court.coverSize }};background-position:{{ court.coverPos }}"></div>
+              <span style="position:absolute;top:12px;inset-inline-start:12px;background:rgba(14,13,16,.82);color:#F1F6EF;padding:6px 11px;border-radius:999px;font-size:10.5px;letter-spacing:0.14em;text-transform:uppercase;backdrop-filter:blur(6px)">{{ court.statusLabel }}</span>
+            </div>
+            <div style="padding:22px;display:flex;flex-direction:column;gap:14px;flex:1">
+              <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:14px">
+                <div>
+                  <h3 style="margin:0 0 4px;font-family:var(--fd);font-weight:600;font-size:20px;letter-spacing:0.01em">{{ court.name }}</h3>
+                  <div style="font-size:12px;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted)">{{ court.locationName }}</div>
+                </div>
+                <div style="text-align:end;white-space:nowrap">
+                  <div style="font-family:var(--fd);font-weight:600;font-size:19px">{{ court.priceLabel }}</div>
+                  <div style="font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted)">{{ t.courts.perHour }}</div>
+                </div>
+              </div>
+              <p style="margin:0;font-size:14.5px;color:var(--muted);text-wrap:pretty">{{ court.description }}</p>
+              <div style="display:flex;flex-wrap:wrap;align-items:flex-start;gap:6px">
+                <sc-for list="{{ court.amenities }}" as="am" hint-placeholder-count="3">
+                  <span style="border:1px solid var(--line);padding:6px 12px;border-radius:999px;font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:var(--muted);white-space:nowrap;background-image:var(--panel)">{{ am }}</span>
+                </sc-for>
+              </div>
+              <div style="display:flex;gap:14px;margin-top:auto;padding-top:8px">
+                <a href="#booking" onClick="{{ court.pick }}" style="font-size:11.5px;font-weight:600;letter-spacing:0.15em;text-transform:uppercase;color:var(--terra);border-bottom:1px solid var(--terra);padding-bottom:3px">{{ t.courts.book }}</a>
+              </div>
+            </div>
+          </article>
+        </sc-for>
+      </div>
+    </section>
+
+    <!-- MINIMAL BANDS -->
+    <section style="padding:clamp(48px,7vw,110px) 0;display:flex;flex-direction:column;gap:clamp(40px,7vw,96px);overflow:hidden">
+      <div data-band-row="right" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));align-items:center;gap:clamp(20px,3vw,40px);padding-inline-start:clamp(18px,4vw,56px)">
+        <div data-textin style="display:flex;flex-direction:column;gap:16px;max-width:42ch">
+          <div data-label style="font-size:13px;letter-spacing:0.14em;text-transform:uppercase;color:var(--terra)">{{ t.min.l1 }}</div>
+          <h3 style="margin:0;font-size:clamp(26px,3.4vw,44px);line-height:1.08;text-wrap:balance">{{ t.min.h1 }}</h3>
+          <p style="margin:0;font-size:16px;line-height:1.6;color:var(--muted);text-wrap:pretty">{{ t.min.p1 }}</p>
+          <div style="display:flex;flex-wrap:wrap;gap:clamp(20px,3vw,44px);margin-top:10px;padding-top:20px;border-top:1px solid var(--line)">
+            <div style="display:flex;flex-direction:column;gap:4px">
+              <span data-label style="font-size:clamp(26px,3vw,34px);color:var(--ink)">{{ t.min.s1v }}</span>
+              <span style="font-size:12px;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted)">{{ t.min.s1k }}</span>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:4px">
+              <span data-label style="font-size:clamp(26px,3vw,34px);color:var(--ink)">{{ t.min.s2v }}</span>
+              <span style="font-size:12px;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted)">{{ t.min.s2k }}</span>
+            </div>
+          </div>
+        </div>
+        <div data-band style="height:clamp(240px,34vw,420px);border-radius:var(--r) 0 0 var(--r);overflow:hidden;background:var(--raise)">
+          <div data-drift="a" role="img" aria-label="Padel glass wall" style="width:100%;height:100%;background-image:url(images/padel-wide.png);background-repeat:no-repeat;background-size:250% auto;background-position:98% 42%"></div>
+        </div>
+      </div>
+      <div data-band-row="left" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));align-items:center;gap:clamp(20px,3vw,40px);padding-inline-end:clamp(18px,4vw,56px)">
+        <div data-band style="height:clamp(240px,34vw,420px);border-radius:0 var(--r) var(--r) 0;overflow:hidden;background:var(--raise)">
+          <div data-drift="b" role="img" aria-label="Padel court surface" style="width:100%;height:100%;background-image:url(images/padel-wide.png);background-repeat:no-repeat;background-size:400% auto;background-position:58% 96%"></div>
+        </div>
+        <div data-textin style="display:flex;flex-direction:column;gap:16px;max-width:42ch;justify-self:end">
+          <div data-label style="font-size:13px;letter-spacing:0.14em;text-transform:uppercase;color:var(--terra)">{{ t.min.l2 }}</div>
+          <h3 style="margin:0;font-size:clamp(26px,3.4vw,44px);line-height:1.08;text-wrap:balance">{{ t.min.h2 }}</h3>
+          <p style="margin:0;font-size:16px;line-height:1.6;color:var(--muted);text-wrap:pretty">{{ t.min.p2 }}</p>
+          <div style="display:flex;flex-wrap:wrap;gap:clamp(20px,3vw,44px);margin-top:10px;padding-top:20px;border-top:1px solid var(--line)">
+            <div style="display:flex;flex-direction:column;gap:4px">
+              <span data-label style="font-size:clamp(26px,3vw,34px);color:var(--ink)">{{ t.min.s3v }}</span>
+              <span style="font-size:12px;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted)">{{ t.min.s3k }}</span>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:4px">
+              <span data-label style="font-size:clamp(26px,3vw,34px);color:var(--ink)">{{ t.min.s4v }}</span>
+              <span style="font-size:12px;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted)">{{ t.min.s4k }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- LOCATIONS -->
+    <section id="locations" style="scroll-margin-top:64px;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,340px),1fr))">
+      <div data-reveal style="padding:clamp(40px,5vw,80px) clamp(18px,4vw,56px);display:flex;flex-direction:column;gap:26px">
+        <div>
+          <div style="font-size:11px;letter-spacing:0.22em;text-transform:uppercase;color:var(--terra);margin-bottom:12px">{{ t.loc.eyebrow }}</div>
+          <h2 style="margin:0;font-family:var(--fd);font-weight:600;font-size:clamp(28px,3.4vw,42px);line-height:1.03;text-transform:uppercase;letter-spacing:-0.015em">{{ t.loc.title }}</h2>
+        </div>
+        <div style="display:flex;flex-direction:column">
+          <sc-for list="{{ locations }}" as="loc" hint-placeholder-count="3">
+            <div style="display:flex;align-items:baseline;justify-content:space-between;gap:16px;padding:20px 0;border-top:1px solid var(--line)">
+              <div>
+                <div style="font-family:var(--fd);font-weight:600;font-size:22px;letter-spacing:0.01em">{{ loc.city }}</div>
+                <div style="font-size:13px;color:var(--muted);margin-top:3px">{{ loc.address }}</div>
+              </div>
+              <div style="text-align:end;white-space:nowrap">
+                <div style="font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:var(--terra)">{{ loc.state }}</div>
+                <div style="font-size:12px;color:var(--muted);margin-top:3px">{{ loc.courtsLabel }}</div>
+              </div>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+      <div style="position:relative;min-height:340px;overflow:hidden">
+        <div data-zoom="out" role="img" aria-label="Padel court" style="position:absolute;inset:0;background-image:url(images/padel-wide.png);background-repeat:no-repeat;background-size:240% auto;background-position:100% 45%;background-color:#00140E"></div>
+        <div style="position:absolute;inset:0;background:linear-gradient(100deg,var(--bg) 0%,rgba(0,28,20,.45) 34%,rgba(0,28,20,0) 72%)"></div>
+      </div>
+    </section>
+
+    <!-- BOOKING -->
+    <section id="booking" style="padding:clamp(44px,5.5vw,88px) clamp(18px,4vw,56px);background-image:var(--wash);scroll-margin-top:64px">
+      <div data-reveal style="margin-bottom:34px">
+        <div style="font-size:11px;letter-spacing:0.22em;text-transform:uppercase;color:var(--terra);margin-bottom:12px">{{ t.book.eyebrow }}</div>
+        <h2 style="margin:0;font-family:var(--fd);font-weight:600;font-size:clamp(28px,3.6vw,44px);line-height:1.03;text-transform:uppercase;letter-spacing:-0.015em">{{ t.book.title }}</h2>
+      </div>
+
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,250px),1fr));gap:28px;align-items:start">
+
+        <div style="display:flex;flex-direction:column;gap:12px">
+          <div style="display:flex;align-items:center;gap:10px;font-size:11px;letter-spacing:0.16em;text-transform:uppercase;color:var(--muted)"><span data-step>01</span>{{ t.book.s1 }}</div>
+          <sc-for list="{{ locationOptions }}" as="o" hint-placeholder-count="2">
+            <button onClick="{{ o.pick }}" data-sel="{{ o.sel }}" data-dim="{{ o.dim }}" style="text-align:start;background:var(--surface);background-image:var(--panel);border:1px solid var(--line);border-radius:var(--r-sm);padding:15px 17px;cursor:pointer;display:flex;flex-direction:column;gap:3px">
+              <span style="font-weight:600;font-size:15px">{{ o.city }}</span>
+              <span style="font-size:12px;opacity:.7">{{ o.meta }}</span>
+            </button>
+          </sc-for>
+        </div>
+
+        <div style="display:flex;flex-direction:column;gap:12px">
+          <div style="display:flex;align-items:center;gap:10px;font-size:11px;letter-spacing:0.16em;text-transform:uppercase;color:var(--muted)"><span data-step>02</span>{{ t.book.s2 }}</div>
+          <sc-for list="{{ courtOptions }}" as="o" hint-placeholder-count="3">
+            <button onClick="{{ o.pick }}" data-sel="{{ o.sel }}" style="text-align:start;background:var(--surface);background-image:var(--panel);border:1px solid var(--line);border-radius:var(--r-sm);padding:15px 17px;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:12px">
+              <span style="font-weight:600;font-size:15px">{{ o.name }}</span>
+              <span style="font-size:12.5px;opacity:.75;white-space:nowrap">{{ o.price }}</span>
+            </button>
+          </sc-for>
+        </div>
+
+        <div style="display:flex;flex-direction:column;gap:12px">
+          <div style="display:flex;align-items:center;gap:10px;font-size:11px;letter-spacing:0.16em;text-transform:uppercase;color:var(--muted)"><span data-step>03</span>{{ t.book.s3 }}</div>
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(64px,1fr));gap:8px">
+            <sc-for list="{{ dateOptions }}" as="d" hint-placeholder-count="7">
+              <button onClick="{{ d.pick }}" data-sel="{{ d.sel }}" style="background:var(--surface);background-image:var(--panel);border:1px solid var(--line);border-radius:var(--r-sm);padding:13px 6px;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:2px">
+                <span style="font-size:10.5px;letter-spacing:0.1em;text-transform:uppercase;opacity:.7">{{ d.dow }}</span>
+                <span style="font-family:var(--fd);font-weight:600;font-size:18px">{{ d.day }}</span>
+                <span style="font-size:10.5px;opacity:.7">{{ d.month }}</span>
+              </button>
+            </sc-for>
+          </div>
+        </div>
+
+        <div style="grid-column:1/-1;display:flex;flex-direction:column;gap:12px">
+          <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;font-size:11px;letter-spacing:0.16em;text-transform:uppercase;color:var(--muted)">
+            <span style="display:flex;align-items:center;gap:10px"><span data-step>04</span>{{ t.book.s4 }}</span>
+            <span style="font-size:10.5px;letter-spacing:0.1em;white-space:nowrap">{{ durationLabel }}</span>
+          </div>
+          <div style="display:flex;gap:8px;max-width:280px">
+            <sc-for list="{{ durationOptions }}" as="d" hint-placeholder-count="2">
+              <button onClick="{{ d.pick }}" data-sel="{{ d.sel }}" style="flex:1;background:var(--surface);background-image:var(--panel);border:1px solid var(--line);border-radius:999px;padding:12px 6px;font-size:13.5px;font-weight:600;cursor:pointer;white-space:nowrap">{{ d.label }}</button>
+            </sc-for>
+          </div>
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(84px,1fr));gap:8px">
+            <sc-for list="{{ slots }}" as="s" hint-placeholder-count="10">
+              <button onClick="{{ s.pick }}" data-status="{{ s.status }}" style="background:var(--surface);background-image:var(--panel);border:1px solid var(--line);border-radius:999px;padding:13px 4px;font-size:14px;font-weight:600;letter-spacing:0.04em;cursor:pointer;font-variant-numeric:tabular-nums">{{ s.time }}</button>
+            </sc-for>
+          </div>
+          <div style="display:flex;flex-wrap:wrap;gap:16px;font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted);margin-top:2px">
+            <span style="display:flex;align-items:center;gap:6px"><span style="width:9px;height:9px;border:1px solid var(--line);background:var(--surface);display:block"></span>{{ t.book.legendFree }}</span>
+            <span style="display:flex;align-items:center;gap:6px"><span style="width:9px;height:9px;background:var(--muted);display:block;opacity:.5"></span>{{ t.book.legendTaken }}</span>
+          </div>
+        </div>
+      </div>
+
+      <div data-reveal style="margin-top:32px;border:1px solid var(--line);border-radius:var(--r);background:var(--surface);background-image:var(--panel);box-shadow:var(--shadow);padding:24px clamp(18px,3vw,28px);display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:20px">
+        <div style="display:flex;flex-wrap:wrap;gap:clamp(18px,4vw,48px)">
+          <div>
+            <div style="font-size:10.5px;letter-spacing:0.16em;text-transform:uppercase;color:var(--muted);margin-bottom:5px">{{ t.book.sumCourt }}</div>
+            <div style="font-family:var(--fd);font-weight:600;font-size:17px;white-space:nowrap">{{ summary.court }}</div>
+          </div>
+          <div>
+            <div style="font-size:10.5px;letter-spacing:0.16em;text-transform:uppercase;color:var(--muted);margin-bottom:5px">{{ t.book.sumWhen }}</div>
+            <div style="font-family:var(--fd);font-weight:600;font-size:17px;white-space:nowrap">{{ summary.when }}</div>
+          </div>
+          <div>
+            <div style="font-size:10.5px;letter-spacing:0.16em;text-transform:uppercase;color:var(--muted);margin-bottom:5px">{{ t.book.sumTotal }}</div>
+            <div style="font-family:var(--fd);font-weight:600;font-size:17px">{{ summary.total }}</div>
+          </div>
+        </div>
+        <button onClick="{{ bookNow }}" data-btn data-dim="{{ bookDim }}" style="background-image:var(--cta);color:#111111;border:none;border-radius:999px;padding:18px 38px;font-size:12px;font-weight:600;letter-spacing:0.17em;text-transform:uppercase;cursor:pointer;white-space:nowrap;box-shadow:0 18px 40px -18px rgba(211,254,1,.8)">{{ t.book.cta }}</button>
+      </div>
+      <p style="margin:14px 0 0;font-size:12.5px;color:var(--muted)">{{ t.book.foot }}</p>
+    </section>
+
+    <footer style="background-image:linear-gradient(180deg,rgba(211,254,1,.06),rgba(211,254,1,0));padding:clamp(34px,4vw,60px) clamp(18px,4vw,56px);display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,200px),1fr));gap:28px;align-items:start">
+      <div>
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px">
+          <span data-mark style="position:relative;display:block;width:30px;height:30px;flex:0 0 auto">
+        <span style="position:absolute;inset-inline-start:0;top:0;width:9px;height:30px;border-radius:5px;background:var(--terra)"></span>
+        <span style="position:absolute;inset-inline-start:11px;top:0;width:19px;height:9px;border-radius:5px;background:var(--terra)"></span>
+        <span style="position:absolute;inset-inline-start:11px;top:11px;width:13px;height:8px;border-radius:5px;background:var(--terra)"></span>
+      </span>
+          <span style="display:flex;flex-direction:column;line-height:1">
+            <span style="font-family:var(--fd);font-weight:700;font-size:14px;letter-spacing:0.22em;text-transform:uppercase">{{ t.brand }}</span>
+            <span style="font-size:9px;letter-spacing:0.3em;text-transform:uppercase;color:var(--muted);margin-top:5px">{{ t.brandTag }}</span>
+          </span>
+        </div>
+        <p style="margin:0;font-size:13.5px;color:var(--muted);max-width:30ch">{{ t.footer.blurb }}</p>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:9px;font-size:13px;color:var(--muted)">
+        <span style="font-size:10.5px;letter-spacing:0.16em;text-transform:uppercase;color:var(--ink)">{{ t.footer.visit }}</span>
+        <span>{{ t.footer.addr1 }}</span>
+        <span>{{ t.footer.addr2 }}</span>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:9px;font-size:13px;color:var(--muted)">
+        <span style="font-size:10.5px;letter-spacing:0.16em;text-transform:uppercase;color:var(--ink)">{{ t.footer.contact }}</span>
+        <span>{{ t.footer.phone }}</span>
+        <span>{{ t.footer.email }}</span>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:9px;font-size:13px;color:var(--muted)">
+        <span style="font-size:10.5px;letter-spacing:0.16em;text-transform:uppercase;color:var(--ink)">{{ t.footer.hours }}</span>
+        <span>{{ t.footer.hoursVal }}</span>
+        <span style="margin-top:8px;font-size:12px">{{ t.footer.rights }}</span>
+      </div>
+    </footer>
+  </main>
+  </sc-if>
+
+  <!-- ===================== AUTH ===================== -->
+  <sc-if value="{{ isAuth }}" hint-placeholder-val="{{ false }}">
+    <main style="display:grid;place-items:center;padding:clamp(30px,6vw,80px) 20px;min-height:70vh">
+      <div data-rise style="width:min(100%,420px);border:1px solid var(--line);border-radius:var(--r);background:var(--surface);background-image:var(--panel);box-shadow:var(--shadow);padding:clamp(26px,4vw,40px)">
+        <div style="font-size:11px;letter-spacing:0.22em;text-transform:uppercase;color:var(--terra);margin-bottom:10px">{{ t.auth.eyebrow }}</div>
+        <h2 style="margin:0 0 6px;font-family:var(--fd);font-weight:600;font-size:28px;text-transform:uppercase;letter-spacing:-0.01em">{{ t.auth.title }}</h2>
+        <p style="margin:0 0 24px;font-size:14px;color:var(--muted)">{{ t.auth.sub }}</p>
+        <div style="display:flex;flex-direction:column;gap:14px">
+          <label style="display:flex;flex-direction:column;gap:6px;font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:var(--muted)">{{ t.auth.email }}
+            <input type="email" value="{{ emailVal }}" onChange="{{ setEmail }}" style="background:var(--bg);border:1px solid var(--line);border-radius:var(--r-sm);padding:14px 16px;font-size:15px;letter-spacing:0">
+          </label>
+          <label style="display:flex;flex-direction:column;gap:6px;font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:var(--muted)">{{ t.auth.password }}
+            <input type="password" value="{{ passVal }}" onChange="{{ setPass }}" style="background:var(--bg);border:1px solid var(--line);border-radius:var(--r-sm);padding:14px 16px;font-size:15px;letter-spacing:0">
+          </label>
+          <button onClick="{{ doSignIn }}" data-btn style="background-image:var(--cta);color:#111111;border:none;border-radius:999px;padding:16px;font-size:12px;font-weight:600;letter-spacing:0.16em;text-transform:uppercase;cursor:pointer;margin-top:6px">{{ t.auth.cta }}</button>
+          <button onClick="{{ goHome }}" style="background:none;border:none;font-size:12px;letter-spacing:0.1em;color:var(--muted);cursor:pointer">{{ t.auth.back }}</button>
+        </div>
+      </div>
+    </main>
+  </sc-if>
+
+  <!-- ===================== CHECKOUT ===================== -->
+  <sc-if value="{{ isCheckout }}" hint-placeholder-val="{{ false }}">
+    <main style="padding:clamp(26px,4vw,56px) clamp(18px,4vw,56px);display:grid;gap:26px;grid-template-columns:repeat(auto-fit,minmax(min(100%,320px),1fr));align-items:start;max-width:1180px;margin-inline:auto">
+
+      <div style="display:flex;flex-direction:column;gap:20px">
+        <div>
+          <div style="font-size:11px;letter-spacing:0.2em;text-transform:uppercase;color:var(--muted)">{{ booking.route }}</div>
+          <h2 style="margin:8px 0 0;font-family:var(--fd);font-weight:600;font-size:clamp(26px,3.2vw,38px);text-transform:uppercase;letter-spacing:-0.015em">{{ t.co.title }}</h2>
+        </div>
+        <div data-rise style="animation-delay:.08s;border:1px solid var(--line);border-radius:var(--r);padding-bottom:4px;background:var(--surface);background-image:var(--panel);box-shadow:var(--shadow)">
+          <div style="display:flex;align-items:center;justify-content:space-between;gap:14px;padding:16px 20px;border-bottom:1px solid var(--line)">
+            <span style="font-size:11px;letter-spacing:0.16em;text-transform:uppercase;color:var(--muted)">{{ t.co.status }}</span>
+            <span style="font-family:var(--fd);font-weight:600;font-size:13px;letter-spacing:0.14em;color:var(--terra)">{{ booking.status }}</span>
+          </div>
+          <sc-for list="{{ booking.rows }}" as="r" hint-placeholder-count="7">
+            <div style="display:flex;align-items:baseline;justify-content:space-between;gap:16px;padding:14px 20px;border-bottom:1px solid var(--line)">
+              <span style="font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:var(--muted)">{{ r.k }}</span>
+              <span style="font-size:15.5px;font-weight:500;text-align:end;white-space:nowrap">{{ r.v }}</span>
+            </div>
+          </sc-for>
+          <div style="display:flex;align-items:baseline;justify-content:space-between;gap:16px;padding:18px 20px">
+            <span style="font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:var(--muted)">{{ t.co.total }}</span>
+            <span style="font-family:var(--fd);font-weight:700;font-size:24px;white-space:nowrap">{{ booking.total }}</span>
+          </div>
+        </div>
+        <sc-if value="{{ holdActive }}" hint-placeholder-val="{{ false }}">
+          <div style="border:1px solid var(--terra);border-radius:999px;padding:14px 20px;display:flex;align-items:center;justify-content:space-between;gap:14px">
+            <span style="font-size:12.5px;color:var(--muted);white-space:nowrap">{{ t.co.hold }}</span>
+            <span style="font-family:var(--fd);font-weight:600;font-size:19px;color:var(--terra);font-variant-numeric:tabular-nums">{{ holdLabel }}</span>
+          </div>
+        </sc-if>
+        <button onClick="{{ goHome }}" style="align-self:start;background:none;border:none;font-size:12px;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);cursor:pointer;white-space:nowrap">{{ t.co.back }}</button>
+      </div>
+
+      <sc-if value="{{ notSubmitted }}" hint-placeholder-val="{{ true }}">
+      <div style="display:flex;flex-direction:column;gap:18px">
+        <div style="border:1px solid var(--line);border-radius:var(--r);background-image:var(--panel);padding:clamp(22px,3vw,30px);display:flex;flex-direction:column;gap:16px">
+          <h3 style="margin:0;font-family:var(--fd);font-weight:600;font-size:19px;text-transform:uppercase;letter-spacing:0.02em">{{ t.co.payTitle }}</h3>
+          <div style="display:flex;flex-wrap:wrap;gap:8px">
+            <sc-for list="{{ methodOptions }}" as="m" hint-placeholder-count="4">
+              <button onClick="{{ m.pick }}" data-sel="{{ m.sel }}" style="background:var(--surface);background-image:var(--panel);border:1px solid var(--line);border-radius:999px;padding:11px 18px;font-size:13.5px;font-weight:600;cursor:pointer;white-space:nowrap">{{ m.label }}</button>
+            </sc-for>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:10px">
+            <sc-for list="{{ payRows }}" as="p" hint-placeholder-count="3">
+              <div style="display:flex;align-items:baseline;justify-content:space-between;gap:14px;padding-bottom:10px;border-bottom:1px solid var(--line)">
+                <span style="font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:var(--muted)">{{ p.k }}</span>
+                <span style="font-size:15px;font-weight:500;font-variant-numeric:tabular-nums;white-space:nowrap">{{ p.v }}</span>
+              </div>
+            </sc-for>
+          </div>
+          <p style="margin:0;font-size:13.5px;color:var(--muted);text-wrap:pretty">{{ t.co.payNote }}</p>
+        </div>
+
+        <div style="border:1px solid var(--line);border-radius:var(--r);background-image:var(--panel);padding:clamp(22px,3vw,30px);display:flex;flex-direction:column;gap:14px">
+          <h3 style="margin:0;font-family:var(--fd);font-weight:600;font-size:19px;text-transform:uppercase;letter-spacing:0.02em">{{ t.co.upTitle }}</h3>
+          <button onClick="{{ attachReceipt }}" style="background:var(--surface);background-image:var(--panel);border:1px dashed var(--line);border-radius:var(--r-sm);padding:32px 18px;cursor:pointer;display:flex;flex-direction:column;gap:6px;align-items:center">
+            <span style="font-size:13.5px;font-weight:500">{{ receiptLabel }}</span>
+            <span style="font-size:11.5px;color:var(--muted)">{{ t.co.upHint }}</span>
+          </button>
+          <button onClick="{{ submitPayment }}" data-btn data-dim="{{ submitDim }}" style="background-image:var(--cta);color:#111111;border:none;border-radius:999px;padding:16px;font-size:12px;font-weight:600;letter-spacing:0.16em;text-transform:uppercase;cursor:pointer">{{ t.co.submit }}</button>
+          <a href="#" data-wa-hint style="display:none"></a>
+          <p style="margin:0;text-align:center;font-size:12px;color:var(--muted)">{{ t.co.whatsapp }}</p>
+        </div>
+      </div>
+      </sc-if>
+
+      <sc-if value="{{ submitted }}" hint-placeholder-val="{{ false }}">
+      <div data-rise style="border:1px solid var(--ok);border-radius:var(--r);background-image:var(--panel);padding:clamp(26px,4vw,38px);display:flex;flex-direction:column;gap:14px;align-self:start">
+        <span style="width:12px;height:12px;background:var(--ok);display:block"></span>
+        <h3 style="margin:0;font-family:var(--fd);font-weight:600;font-size:24px;text-transform:uppercase;letter-spacing:-0.01em">{{ t.co.doneTitle }}</h3>
+        <p style="margin:0;font-size:15px;color:var(--muted);text-wrap:pretty">{{ t.co.doneBody }}</p>
+        <div style="display:flex;flex-direction:column;gap:8px;padding-top:12px;border-top:1px solid var(--line);font-size:13.5px;color:var(--muted)">
+          <span>{{ t.co.doneRef }} {{ booking.ref }}</span>
+          <span>{{ t.co.doneNext }}</span>
+        </div>
+      </div>
+      </sc-if>
+    </main>
+    </sc-if>
+
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1440}}">
+const IMG_A = 'images/padel-wide.png';
+const IMG_B = 'images/padel-close.png';
+
+const DATA = {
+  locations: [
+    { id: 'assiut', active: true, courtCount: 3,
+      en: { city: 'Assiut', address: 'Corniche El Nil, Assiut', state: 'Open now' },
+      ar: { city: 'أسيوط', address: 'كورنيش النيل، أسيوط', state: 'مفتوح الآن' } },
+    { id: 'newcairo', active: false, courtCount: 4,
+      en: { city: 'New Cairo', address: 'Fifth Settlement, Cairo', state: 'Opening 2027' },
+      ar: { city: 'القاهرة الجديدة', address: 'التجمع الخامس، القاهرة', state: 'يفتح ٢٠٢٧' } },
+    { id: 'alex', active: false, courtCount: 2,
+      en: { city: 'Alexandria', address: 'Smouha, Alexandria', state: 'Opening 2027' },
+      ar: { city: 'الإسكندرية', address: 'سموحة، الإسكندرية', state: 'يفتح ٢٠٢٧' } }
+  ],
+  courts: [
+    { id: 'c1', locationId: 'assiut', price: 320, cover: IMG_B, coverSize: '360% auto', coverPos: '78% 97%', images: 5, active: true,
+      en: { name: 'Court 01 — Centre', description: 'Panoramic glass court under the main floodlight rig. The house court for match play.', amenities: ['Panoramic glass', 'LED floodlights', 'Showers'] },
+      ar: { name: 'الملعب ٠١ — المركزي', description: 'ملعب زجاجي بانورامي تحت أعمدة الإضاءة الرئيسية. ملعب المباريات الأساسي.', amenities: ['زجاج بانورامي', 'إضاءة LED', 'دشات'] } },
+    { id: 'c2', locationId: 'assiut', price: 280, cover: IMG_A, coverSize: '340% auto', coverPos: '98% 42%', images: 4, active: true,
+      en: { name: 'Court 02 — North', description: 'Shaded from the afternoon sun, with covered seating along the north wall.', amenities: ['Shaded', 'Covered seating', 'Parking'] },
+      ar: { name: 'الملعب ٠٢ — الشمالي', description: 'مظلل من شمس العصر، بمقاعد مغطاة على الجدار الشمالي.', amenities: ['مظلل', 'مقاعد مغطاة', 'موقف سيارات'] } },
+    { id: 'c3', locationId: 'assiut', price: 350, cover: IMG_A, coverSize: '400% auto', coverPos: '58% 96%', images: 6, active: true,
+      en: { name: 'Court 03 — Panorama', description: 'Full-glass back wall facing the river. Equipment rental at the court gate.', amenities: ['River view', 'Equipment rental', 'Showers'] },
+      ar: { name: 'الملعب ٠٣ — بانوراما', description: 'جدار خلفي زجاجي كامل يواجه النيل. تأجير مضارب عند بوابة الملعب.', amenities: ['إطلالة على النيل', 'تأجير مضارب', 'دشات'] } },
+    { id: 'c4', locationId: 'newcairo', price: 420, cover: IMG_B, coverSize: '300% auto', coverPos: '80% 90%', images: 3, active: true,
+      en: { name: 'Court 01 — Atrium', description: 'Indoor court inside the New Cairo atrium. Opening 2027.', amenities: ['Indoor', 'Climate control', 'Parking'] },
+      ar: { name: 'الملعب ٠١ — الأتريوم', description: 'ملعب مغلق داخل أتريوم القاهرة الجديدة. يفتح ٢٠٢٧.', amenities: ['مغلق', 'تكييف', 'موقف سيارات'] } }
+  ]
+};
+
+const T = {
+  en: {
+    brand: 'The Field', markGlyph: 'F', brandTag: 'Padel · Assiut', langSwitch: 'عربي', themeSwitchDark: 'Light', themeSwitchLight: 'Dark',
+    signIn: 'Sign in', signOut: 'Sign out',
+    nav: { home: 'Home', courts: 'Courts', locations: 'Locations', booking: 'Booking' }, joinNow: 'Join now',
+    hero: { eyebrow: 'Padel courts — Assiut, Egypt', title: 'Book the court.\nPlay the point.',
+      sub: 'THE FIELD is a padel-only booking platform. Pick a court, pick an hour, and the slot is yours.',
+      tag: 'Padel courts — Assiut', cta1: 'Book a court', cta2: 'Explore courts',
+      f1: '3 courts in Assiut', f2: '90-minute sessions', f3: 'Open 08:00 — 01:00',
+      scene2: 'Glass back walls, LED floodlights, and a surface resurfaced every season.',
+      scene3: 'Three courts on the Assiut corniche. More cities across Egypt next.',
+      scroll: 'Scroll' },
+    courts: { eyebrow: 'The courts', title: 'Three courts, one standard',
+      note: 'Every court is glass-walled, floodlit and maintained daily. Prices are per hour, before tax.',
+      perHour: 'per hour', book: 'Book this court', images: 'images' },
+    loc: { eyebrow: 'Locations', title: 'Assiut first. Egypt next.' },
+    min: { l1: 'Glass', h1: 'Four glass walls, floodlit until one in the morning.',
+      p1: 'Panoramic back walls and black metal framing, so every point stays in view from outside the court.',
+      s1v: '4', s1k: 'Glass walls', s2v: '01:00', s2k: 'Floodlights until',
+      s3v: '1x', s3k: 'Resurfaced yearly', s4v: '90', s4k: 'Minutes per session',
+      l2: 'Surface', h2: 'Resurfaced every season. Swept before every session.',
+      p2: 'A consistent bounce on every court, checked by our staff before each booking starts.' },
+    book: { eyebrow: 'Booking', title: 'Reserve a slot',
+      s1: 'Location', s2: 'Court', s3: 'Date', s4: 'Time', duration: '90 min',
+      legendFree: 'Available', legendTaken: 'Booked or held',
+      sumCourt: 'Court', sumWhen: 'Date & time', sumTotal: 'Total', cta: 'Book now',
+      foot: 'Availability is confirmed on the server when you book. Your slot is held for 10 minutes while you pay.' },
+    auth: { eyebrow: 'Account', title: 'Sign in to continue', sub: 'A booking needs an account so we can send your confirmation.',
+      email: 'Email', password: 'Password', cta: 'Sign in and continue', back: 'Back to booking' },
+    co: { title: 'Checkout', status: 'Booking status', total: 'Total due', hold: 'Slot held for',
+      back: 'Back to landing',
+      payTitle: 'Payment instructions',
+      payNote: 'Transfer the total with your chosen method, then upload the receipt below. Admin confirms within a few hours.',
+      upTitle: 'Payment receipt', upHint: 'JPG, PNG or PDF — max 5 MB', submit: 'Submit payment',
+      whatsapp: 'Sends your booking details to our WhatsApp',
+      doneTitle: 'Payment submitted', doneBody: 'Your receipt is with our team. The booking is confirmed once payment is approved.',
+      doneRef: 'Reference', doneNext: 'You will get an email and a WhatsApp message on approval.',
+      rCourt: 'Court', rLoc: 'Location', rDate: 'Date', rTime: 'Time', rDur: 'Duration', rRef: 'Reference',
+      pMethod: 'Method', pSendTo: 'Send to', pName: 'Account name' },
+    footer: { blurb: 'Padel courts and court booking in Assiut, Egypt.', visit: 'Visit', addr1: 'Corniche El Nil', addr2: 'Assiut, Egypt',
+      contact: 'Contact', phone: '+20 100 000 0000', email: 'play@thefield.eg',
+      hours: 'Hours', hoursVal: 'Daily 08:00 — 01:00', rights: '© 2026 THE FIELD' },
+    pre: { eyebrow: 'Assiut, Egypt', line: 'Padel.\nNothing else.', loading: 'Preparing the court' },
+    empty: '—', pickFirst: 'Select a slot',
+    receiptNone: 'Attach receipt file', receiptSet: 'receipt-instapay.jpg attached'
+  },
+  ar: {
+    brand: 'ذا فيلد', markGlyph: 'ف', brandTag: 'بادل · أسيوط', langSwitch: 'EN', themeSwitchDark: 'نهاري', themeSwitchLight: 'ليلي',
+    signIn: 'تسجيل الدخول', signOut: 'خروج',
+    nav: { home: 'الرئيسية', courts: 'الملاعب', locations: 'الفروع', booking: 'الحجز' }, joinNow: 'انضم الآن',
+    hero: { eyebrow: 'ملاعب بادل — أسيوط، مصر', title: 'احجز الملعب.\nالعب النقطة.',
+      sub: 'ذا فيلد منصة حجز مخصصة للبادل فقط. اختر الملعب والساعة، والحجز يصبح لك.',
+      tag: 'ملاعب بادل — أسيوط', cta1: 'احجز ملعب', cta2: 'استعرض الملاعب',
+      f1: '٣ ملاعب في أسيوط', f2: 'جلسات ٩٠ دقيقة', f3: 'يومياً ٠٨:٠٠ — ٠١:٠٠',
+      scene2: 'حوائط زجاجية خلفية، إضاءة LED، وأرضية تُجدد كل موسم.',
+      scene3: 'ثلاثة ملاعب على كورنيش أسيوط. ومدن أخرى في مصر قريباً.',
+      scroll: 'اسحب' },
+    courts: { eyebrow: 'الملاعب', title: 'ثلاثة ملاعب، مستوى واحد',
+      note: 'كل ملعب زجاجي ومضاء بالكامل وتتم صيانته يومياً. الأسعار للساعة قبل الضريبة.',
+      perHour: 'للساعة', book: 'احجز هذا الملعب', images: 'صور' },
+    loc: { eyebrow: 'الفروع', title: 'أسيوط أولاً. ثم مصر.' },
+    min: { l1: 'الزجاج', h1: 'أربعة حوائط زجاجية، وإضاءة حتى الواحدة صباحاً.',
+      p1: 'حوائط خلفية بانورامية بإطارات معدنية سوداء، فتظل كل نقطة مرئية من خارج الملعب.',
+      s1v: '٤', s1k: 'حوائط زجاجية', s2v: '٠١:٠٠', s2k: 'إضاءة حتى',
+      s3v: '١×', s3k: 'تجديد سنوي', s4v: '٩٠', s4k: 'دقيقة لكل جلسة',
+      l2: 'الأرضية', h2: 'تُجدد كل موسم، وتُنظف قبل كل جلسة.',
+      p2: 'ارتداد ثابت في كل ملعب، يتحقق منه فريقنا قبل بداية كل حجز.' },
+    book: { eyebrow: 'الحجز', title: 'احجز موعدك',
+      s1: 'الفرع', s2: 'الملعب', s3: 'التاريخ', s4: 'الوقت', duration: '٩٠ دقيقة',
+      legendFree: 'متاح', legendTaken: 'محجوز أو معلق',
+      sumCourt: 'الملعب', sumWhen: 'التاريخ والوقت', sumTotal: 'الإجمالي', cta: 'احجز الآن',
+      foot: 'يتم التأكد من التوافر على الخادم عند الحجز. يُحفظ الموعد ١٠ دقائق أثناء الدفع.' },
+    auth: { eyebrow: 'الحساب', title: 'سجّل الدخول للمتابعة', sub: 'الحجز يحتاج حساباً حتى نرسل لك التأكيد.',
+      email: 'البريد الإلكتروني', password: 'كلمة المرور', cta: 'دخول ومتابعة', back: 'رجوع للحجز' },
+    co: { title: 'الدفع', status: 'حالة الحجز', total: 'الإجمالي المستحق', hold: 'الموعد محفوظ لمدة',
+      back: 'رجوع للصفحة الرئيسية',
+      payTitle: 'تعليمات الدفع',
+      payNote: 'حوّل المبلغ بالطريقة التي اخترتها، ثم ارفع الإيصال بالأسفل. تتم المراجعة خلال ساعات.',
+      upTitle: 'إيصال الدفع', upHint: 'JPG أو PNG أو PDF — ٥ ميجابايت كحد أقصى', submit: 'إرسال الدفع',
+      whatsapp: 'يُرسل تفاصيل حجزك إلى واتساب',
+      doneTitle: 'تم إرسال الدفع', doneBody: 'وصل الإيصال لفريقنا. يتم تأكيد الحجز بعد الموافقة على الدفع.',
+      doneRef: 'رقم الحجز', doneNext: 'ستصلك رسالة بريد وواتساب عند الموافقة.',
+      rCourt: 'الملعب', rLoc: 'الفرع', rDate: 'التاريخ', rTime: 'الوقت', rDur: 'المدة', rRef: 'رقم الحجز',
+      pMethod: 'الطريقة', pSendTo: 'التحويل إلى', pName: 'اسم الحساب' },
+    footer: { blurb: 'ملاعب بادل وحجز ملاعب في أسيوط، مصر.', visit: 'العنوان', addr1: 'كورنيش النيل', addr2: 'أسيوط، مصر',
+      contact: 'للتواصل', phone: '+20 100 000 0000', email: 'play@thefield.eg',
+      hours: 'ساعات العمل', hoursVal: 'يومياً ٠٨:٠٠ — ٠١:٠٠', rights: '© ٢٠٢٦ ذا فيلد' },
+    pre: { eyebrow: 'أسيوط، مصر', line: 'بادل.\nولا شيء غيره.', loading: 'جاري تهيئة الملعب' },
+    empty: '—', pickFirst: 'اختر موعداً',
+    receiptNone: 'أرفق ملف الإيصال', receiptSet: 'تم إرفاق receipt-instapay.jpg'
+  }
+};
+
+const TIMES = ['08:00','09:00','10:00','11:00','12:00','13:00','14:00','15:00','16:00','17:00','18:00','19:00','20:00','21:00','22:00','23:00'];
+const DURATIONS = [90, 120];
+const WA_NUMBER = '201000000000';
+const METHODS = [
+  { id: 'instapay', en: 'InstaPay', ar: 'إنستاباي', handle: 'thefield@instapay' },
+  { id: 'vodafone', en: 'Vodafone Cash', ar: 'فودافون كاش', handle: '010 0000 0000' },
+  { id: 'orange', en: 'Orange Cash', ar: 'أورنج كاش', handle: '012 0000 0000' },
+  { id: 'etisalat', en: 'Etisalat Cash', ar: 'اتصالات كاش', handle: '011 0000 0000' },
+  { id: 'fawry', en: 'Fawry', ar: 'فوري', handle: '900 112 233' }
+];
+const DOW_EN = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+const DOW_AR = ['أحد','إثنين','ثلاثاء','أربعاء','خميس','جمعة','سبت'];
+const MON_EN = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+const MON_AR = ['يناير','فبراير','مارس','أبريل','مايو','يونيو','يوليو','أغسطس','سبتمبر','أكتوبر','نوفمبر','ديسمبر'];
+
+function hash(str) {
+  let h = 2166136261;
+  for (let i = 0; i < str.length; i++) { h ^= str.charCodeAt(i); h = Math.imul(h, 16777619); }
+  return (h >>> 0);
+}
+function slotStatus(courtId, iso, time) {
+  const n = hash(courtId + iso + time) % 10;
+  if (n < 2) return 'booked';
+  if (n === 2) return 'held';
+  return 'available';
+}
+function toArabicDigits(s) {
+  return String(s).replace(/[0-9]/g, d => '٠١٢٣٤٥٦٧٨٩'[+d]);
+}
+
+class Component extends DCLogic {
+  state = {
+    lang: 'en', theme: 'dark', view: 'landing',
+    locationId: 'assiut', courtId: 'c1', dateIdx: 0, time: null,
+    signedIn: false, email: '', pass: '',
+    booking: null, receipt: false, submitted: false, holdLeft: 600, duration: 90, method: 'instapay',
+    loading: true, loaded: 0
+  };
+
+  componentDidMount() {
+    const srcs = [IMG_A, IMG_B];
+    const started = Date.now();
+    const target = Math.random() < 0.35 ? 15000 : 2600 + Math.random() * 1800;
+    let done = 0;
+    const settle = () => {
+      if (done < srcs.length) return;
+      const wait = Math.max(0, target - (Date.now() - started));
+      clearTimeout(this.hideTimer);
+      this.hideTimer = setTimeout(() => this.setState({ loading: false, progress: 1 }), wait);
+    };
+    srcs.forEach(src => {
+      const img = new Image();
+      const finish = () => { done++; settle(); };
+      img.onload = finish; img.onerror = finish; img.src = src;
+    });
+    this.progTick = setInterval(() => {
+      const p = Math.min(1, (Date.now() - started) / target);
+      this.setState({ progress: p });
+      if (p >= 1) clearInterval(this.progTick);
+    }, 90);
+    this.failsafe = setTimeout(() => this.setState({ loading: false }), target + 4000);
+    this.io = new IntersectionObserver(entries => {
+      entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('is-in'); });
+    }, { threshold: 0.18 });
+    this.watchBands = () => {
+      document.querySelectorAll('[data-band-row]').forEach(el => this.io.observe(el));
+    };
+    this.watchBands();
+    this.bandPoll = setInterval(this.watchBands, 1200);
+    this.onMove = e => {
+      const g = document.querySelector('[data-glow]');
+      if (!g) return;
+      g.style.transform = 'translate(' + e.clientX + 'px,' + e.clientY + 'px)';
+      g.classList.add('is-on');
+    };
+    this.onLeave = () => {
+      const g = document.querySelector('[data-glow]');
+      if (g) g.classList.remove('is-on');
+    };
+    window.addEventListener('pointermove', this.onMove, { passive: true });
+    document.addEventListener('pointerleave', this.onLeave);
+    this.timer = setInterval(() => {
+      if (this.state.booking && !this.state.submitted && this.state.holdLeft > 0) {
+        this.setState(s => ({ holdLeft: s.holdLeft - 1 }));
+      }
+    }, 1000);
+  }
+  componentWillUnmount() {
+    clearInterval(this.timer); clearTimeout(this.hideTimer); clearTimeout(this.failsafe);
+    clearInterval(this.bandPoll); clearInterval(this.progTick); if (this.io) this.io.disconnect();
+    window.removeEventListener('pointermove', this.onMove);
+    document.removeEventListener('pointerleave', this.onLeave);
+  }
+
+  dates() {
+    const base = new Date(2026, 8, 9);
+    return Array.from({ length: 7 }, (_, i) => {
+      const d = new Date(base.getFullYear(), base.getMonth(), base.getDate() + i);
+      return d;
+    });
+  }
+
+  num(v) { return this.state.lang === 'ar' ? toArabicDigits(v) : String(v); }
+
+  money(v) {
+    return this.state.lang === 'ar' ? toArabicDigits(v) + ' جنيه' : v + ' EGP';
+  }
+
+  dateLabel(d) {
+    const ar = this.state.lang === 'ar';
+    const mon = ar ? MON_AR[d.getMonth()] : MON_EN[d.getMonth()];
+    return this.num(d.getDate()) + ' ' + mon + ' ' + this.num(d.getFullYear());
+  }
+
+  renderVals() {
+    const s = this.state;
+    const ar = s.lang === 'ar';
+    const L = ar ? 'ar' : 'en';
+    const t = T[L];
+    const dates = this.dates();
+    const activeDate = dates[s.dateIdx];
+    const iso = activeDate.toISOString().slice(0, 10);
+
+    const courtsForLoc = DATA.courts.filter(c => c.locationId === s.locationId && c.active);
+    const court = DATA.courts.find(c => c.id === s.courtId) || courtsForLoc[0];
+    const location = DATA.locations.find(l => l.id === s.locationId);
+
+    const dur = s.duration || 90;
+    const sessionPrice = court ? Math.round(court.price * (dur / 60)) : 0;
+    const durLabel = d => ar ? toArabicDigits(d) + ' دقيقة' : d + ' min';
+    const activeMethod = METHODS.find(m => m.id === (s.method || 'instapay')) || METHODS[0];
+
+    const courts = DATA.courts.filter(c => c.locationId === 'assiut').map(c => ({
+      id: c.id, coverCss: 'url(' + c.cover + ')',
+      coverSize: c.coverSize, coverPos: c.coverPos, name: c[L].name, description: c[L].description,
+      amenities: c[L].amenities,
+      locationName: DATA.locations.find(l => l.id === c.locationId)[L].city,
+      priceLabel: this.money(c.price),
+      statusLabel: ar ? 'متاح' : 'Active',
+      imageCount: this.num(c.images) + ' ' + t.courts.images,
+      pick: () => this.setState({ locationId: c.locationId, courtId: c.id, time: null })
+    }));
+
+    const locations = DATA.locations.map(l => ({
+      city: l[L].city, address: l[L].address, state: l[L].state,
+      courtsLabel: this.num(l.courtCount) + ' ' + t.nav.courts
+    }));
+
+    const locationOptions = DATA.locations.map(l => ({
+      city: l[L].city,
+      meta: l.active ? l[L].address : l[L].state,
+      sel: s.locationId === l.id ? '1' : '0',
+      dim: l.active ? '0' : '1',
+      pick: () => {
+        if (!l.active) return;
+        const first = DATA.courts.find(c => c.locationId === l.id && c.active);
+        this.setState({ locationId: l.id, courtId: first ? first.id : null, time: null });
+      }
+    }));
+
+    const courtOptions = courtsForLoc.map(c => ({
+      name: c[L].name, price: this.money(c.price),
+      sel: s.courtId === c.id ? '1' : '0',
+      pick: () => this.setState({ courtId: c.id, time: null })
+    }));
+
+    const dateOptions = dates.map((d, i) => ({
+      dow: ar ? DOW_AR[d.getDay()] : DOW_EN[d.getDay()],
+      day: this.num(d.getDate()),
+      month: ar ? MON_AR[d.getMonth()] : MON_EN[d.getMonth()],
+      sel: s.dateIdx === i ? '1' : '0',
+      pick: () => this.setState({ dateIdx: i, time: null })
+    }));
+
+    const slots = TIMES.map(time => {
+      const needed = dur > 90 ? 2 : 1;
+      const idx = TIMES.indexOf(time);
+      let st = court ? slotStatus(court.id, iso, time) : 'booked';
+      if (needed === 2) {
+        const next = TIMES[idx + 1];
+        if (!next) st = 'booked';
+        else if (court && slotStatus(court.id, iso, next) !== 'available') st = 'booked';
+      }
+      const status = s.time === time && st === 'available' ? 'selected' : st;
+      return {
+        time: this.num(time), status,
+        pick: () => { if (st === 'available') this.setState({ time }); }
+      };
+    });
+
+    const b = s.booking;
+    const holdMin = Math.floor(Math.max(0, s.holdLeft) / 60);
+    const holdSec = Math.max(0, s.holdLeft) % 60;
+
+    return {
+      t, dir: ar ? 'rtl' : 'ltr', theme: s.theme,
+      langSwitch: t.langSwitch,
+      themeSwitch: s.theme === 'dark' ? t.themeSwitchDark : t.themeSwitchLight,
+      loading: s.loading,
+      progressPct: Math.round((s.progress || 0) * 100) + '%',
+      progressLabel: this.num(Math.round((s.progress || 0) * 100)) + '%',
+      isLanding: s.view === 'landing', isAuth: s.view === 'auth', isCheckout: s.view === 'checkout',
+      signedIn: s.signedIn, signedOut: !s.signedIn,
+      userEmail: s.email || 'player@thefield.eg',
+      toggleLang: () => this.setState({ lang: ar ? 'en' : 'ar' }),
+      toggleTheme: () => this.setState({ theme: s.theme === 'dark' ? 'light' : 'dark' }),
+      goHome: () => this.setState({ view: 'landing' }),
+      goAuth: () => this.setState({ view: 'auth' }),
+      signOut: () => this.setState({ signedIn: false, view: 'landing' }),
+      setEmail: e => this.setState({ email: e.target.value }),
+      setPass: e => this.setState({ pass: e.target.value }),
+      emailVal: s.email, passVal: s.pass,
+      doSignIn: () => {
+        this.setState({ signedIn: true, email: s.email || 'player@thefield.eg' });
+        if (s.time) this.createBooking(); else this.setState({ view: 'landing' });
+      },
+
+      courts, locations, locationOptions, courtOptions, dateOptions, slots,
+
+      summary: {
+        court: court ? court[L].name : t.empty,
+        when: s.time ? this.dateLabel(activeDate) + ' · ' + this.num(s.time) : t.pickFirst,
+        total: s.time ? this.money(sessionPrice) : t.empty
+      },
+      durationLabel: durLabel(dur),
+      durationOptions: DURATIONS.map(d => ({
+        label: durLabel(d), sel: dur === d ? '1' : '0',
+        pick: () => this.setState({ duration: d, time: null })
+      })),
+      bookDim: s.time ? '0' : '1',
+      bookNow: () => {
+        if (!s.time) return;
+        if (!s.signedIn) { this.setState({ view: 'auth' }); return; }
+        this.createBooking();
+      },
+
+      booking: b ? {
+        route: '/booking/' + b.id,
+        status: s.submitted ? 'PAYMENT_SUBMITTED' : b.status,
+        ref: b.ref,
+        total: this.money(b.price),
+        rows: [
+          { k: t.co.rRef, v: b.ref },
+          { k: t.co.rCourt, v: b.court },
+          { k: t.co.rLoc, v: b.location },
+          { k: t.co.rDate, v: b.date },
+          { k: t.co.rTime, v: b.time },
+          { k: t.co.rDur, v: durLabel(b.duration || 90) }
+        ]
+      } : null,
+      methodOptions: METHODS.map(m => ({
+        label: m[L], sel: (s.method || 'instapay') === m.id ? '1' : '0',
+        pick: () => this.setState({ method: m.id })
+      })),
+      payRows: [
+        { k: t.co.pMethod, v: activeMethod[L] },
+        { k: t.co.pSendTo, v: activeMethod.handle.match(/^[0-9+ ]+$/) ? this.num(activeMethod.handle) : activeMethod.handle },
+        { k: t.co.pName, v: 'The Field Padel' }
+      ],
+      holdActive: !!b && !s.submitted,
+      holdLabel: this.num(holdMin) + ':' + this.num(String(holdSec).padStart(2, '0')),
+      notSubmitted: !s.submitted, submitted: s.submitted,
+      receiptLabel: s.receipt ? t.receiptSet : t.receiptNone,
+      attachReceipt: () => this.setState({ receipt: true }),
+      submitDim: s.receipt ? '0' : '1',
+      submitPayment: () => {
+        if (!s.receipt || !b) return;
+        const msg = [
+          T[L].brand + ' — ' + t.co.rRef + ': ' + b.ref,
+          t.co.rCourt + ': ' + b.court,
+          t.co.rLoc + ': ' + b.location,
+          t.co.rDate + ': ' + b.date + ' · ' + b.time,
+          t.co.rDur + ': ' + durLabel(b.duration || 90),
+          t.co.total + ': ' + this.money(b.price),
+          t.co.pMethod + ': ' + activeMethod[L]
+        ].join('\n');
+        window.open('https://wa.me/' + WA_NUMBER + '?text=' + encodeURIComponent(msg), '_blank', 'noopener');
+        this.setState({ submitted: true });
+      }
+    };
+  }
+
+  createBooking() {
+    const s = this.state;
+    const L = s.lang === 'ar' ? 'ar' : 'en';
+    const court = DATA.courts.find(c => c.id === s.courtId);
+    const loc = DATA.locations.find(l => l.id === s.locationId);
+    const d = this.dates()[s.dateIdx];
+    const id = String(hash(s.courtId + s.dateIdx + s.time)).slice(0, 6);
+    this.setState({
+      view: 'checkout', receipt: false, submitted: false, holdLeft: 600,
+      booking: {
+        id, ref: 'TF-' + id,
+        status: 'HELD',
+        court: court[L].name, location: loc[L].city,
+        date: this.dateLabel(d), time: this.num(s.time),
+        duration: s.duration || 90,
+        price: Math.round(court.price * ((s.duration || 90) / 60))
+      }
+    });
+  }
+}
+
+</script>
+</body>
+</html>
